@@ -23,6 +23,8 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="foc-win.py" />
+    <Compile Include="focWindow.py" />
+    <Compile Include="qSingleApplication.py" />
     <Compile Include="setup.py" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.Common.targets" />
