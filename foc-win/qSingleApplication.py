@@ -63,11 +63,9 @@ class QSingleApplication(QApplication):
     def connectToExistingApp(self):
         if len(sys.argv)>1 and sys.argv[1] is not None:
             self.m_socket.write(sys.argv[1])
-            self.m_socket.bytesWritten.connect(self.quit)
         else:
-            QMessageBox.warning(None, self.tr("Already running"), self.tr("The program is already running."))
-            # Quit application in 250 ms
-            QTimer.singleShot(250, self.quit)
+            self.m_socket.write("")
+        self.m_socket.bytesWritten.connect(self.quit)
 
     def getNewConnection(self):
         self.new_socket = self.m_server.nextPendingConnection()
