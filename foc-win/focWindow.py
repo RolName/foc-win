@@ -11,5 +11,7 @@ class FocWindow(QMainWindow):
         self.label = QLabel(labelText)
         self.setCentralWidget(self.label)
     @QtCore.Slot(str)
+    def receiveArgs(self, args):
+        self.showMessage(args)
     def showMessage(self, args):
         QMessageBox.information(self, self.tr("Received args from another instance"),args)

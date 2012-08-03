@@ -24,8 +24,8 @@
 """
 """
     Modifications by Vladimir Nachbaur:
-    Send getInstanceArgs signal when args are received instead of calling a
-    method from mainWindow.
+    Send receiveArgs signal when args are received instead of calling a
+    method from mainWindow and connects to mainWindow receiveArgs slot
 """
 
 from PySide import QtCore
@@ -36,7 +36,7 @@ import sys
 
 class QSingleApplication(QApplication):
     # Signal sent when another instance is launched with arguments
-    getInstanceArgs = QtCore.Signal((str,))
+    argsReceived = QtCore.Signal((str,))
 
     # Start the application,
     # either as a server (first instance) or as a client
@@ -54,6 +54,7 @@ class QSingleApplication(QApplication):
         self.m_server = QLocalServer()
         if self.m_server.listen(self.applicationName()):
             self.m_server.newConnection.connect(self.getNewConnection)
+            self.argsReceived.connect(self.mainWindow.receiveArgs)
             self.mainWindow.show()
         else:
             QMessageBox.critical(None, self.tr("Error"), self.tr("Error listening the socket."))
@@ -74,4 +75,4 @@ class QSingleApplication(QApplication):
 
     def readSocket(self):
         f = self.new_socket.readLine()
-        self.getInstanceArgs.emit(str(f))
+        self.argsReceived.emit(str(f))

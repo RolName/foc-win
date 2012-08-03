@@ -7,5 +7,4 @@ if __name__ == "__main__":
     app.setApplicationName("Foc for Windows")
     myWindow = FocWindow()
     app.singleStart(myWindow)
-    app.getInstanceArgs.connect(myWindow.showMessage)
     sys.exit(app.exec_())
