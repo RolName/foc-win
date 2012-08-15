@@ -63,9 +63,10 @@ class QSingleApplication(QApplication):
     def connectToExistingApp(self):
         if len(sys.argv)>1 and sys.argv[1] is not None:
             self.m_socket.write(sys.argv[1])
+            self.m_socket.bytesWritten.connect(self.quit)
         else:
-            self.m_socket.write("")
-        self.m_socket.bytesWritten.connect(self.quit)
+            self.m_socket.write("--show")
+            self.m_socket.bytesWritten.connect(self.quit)
 
     def getNewConnection(self):
         self.new_socket = self.m_server.nextPendingConnection()

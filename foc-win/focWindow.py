@@ -13,7 +13,8 @@ class FocWindow(QMainWindow):
         # bring window to front
         self.setWindowState(QtCore.Qt.WindowActive)
         self.activateWindow()
-
-        self.label.setText(args)
+        
+        if args != "--show":
+            self.label.setText(args)
     def showMessage(self, args):
         QMessageBox.information(self, self.tr("Received args from another instance"),args)
