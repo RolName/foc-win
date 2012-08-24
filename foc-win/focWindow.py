@@ -15,21 +15,26 @@ class FocWindow(QMainWindow):
         self.progID = PROGID_NAME
         self.makeCentralWidget("Args displayed here")
         if len(sys.argv) > 1:
-            self.receiveArgs(sys.argv[1])
+            self.computeArgs(sys.argv[1])
     @QtCore.Slot(str)
     def receiveArgs(self, args):
-        # bring window to front
-        self.setWindowState(QtCore.Qt.WindowActive)
-        self.activateWindow()
-        
-        if args != "--show":
-            self.label.setText(args)
+        self.bringToFront()
+        self.showMessage("add " + args + " to FoC ?")
+        self.computeArgs(args)
     @QtCore.Slot()
     def AssociateExtension(self):
         regRegister.associate_extension(self.progID, self.exe_path, '.torrent')
     @QtCore.Slot()
     def AssociateProtocol(self):
         regRegister.associate_protocol(self.exe_path, 'magnet')
+    @QtCore.Slot()
+    def bringToFront(self):
+        self.showMinimized()
+        self.setWindowState(QtCore.Qt.WindowActive)
+        self.showNormal()
+    def computeArgs(self, args):
+        if args != "--show":
+            self.label.setText(args)
     def makeCentralWidget(self, labelText):
         self.regExtBtn = QPushButton('register .torrent extension')
         self.regExtBtn.clicked.connect(self.AssociateExtension)
