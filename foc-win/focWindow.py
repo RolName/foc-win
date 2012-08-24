@@ -1,16 +1,18 @@
+from PySide import QtGui
 from PySide.QtGui import QMainWindow, QWidget, QMessageBox, QHBoxLayout, QVBoxLayout, QPushButton, QLabel
 from PySide import QtCore
+from PySide.QtCore import QSize
 import os, sys
 import regRegister
 
-HANDLER_NAME = "Foc.torrent"
-HANDLER_VERSION = "0.1"
-PROGID_NAME = HANDLER_NAME + '.' + HANDLER_VERSION
+PROGID_NAME = "Foc.torrent.0.1"
+WINDOWS_SIZE = QtCore.QSize(640, 480)
 
 class FocWindow(QMainWindow):
     def __init__(self):
         QMainWindow.__init__(self)
         self.setWindowTitle("Foc for windows")
+        self.resize(WINDOWS_SIZE)
         self.exe_path = full_exe_path()
         self.progID = PROGID_NAME
         self.makeCentralWidget("Args displayed here")
@@ -32,23 +34,16 @@ class FocWindow(QMainWindow):
         self.showMinimized()
         self.setWindowState(QtCore.Qt.WindowActive)
         self.showNormal()
+    @QtCore.Slot()
+    def quit(self):
+        QtGui.QApplication.instance().quit()
     def computeArgs(self, args):
         if args != "--show":
             self.label.setText(args)
     def makeCentralWidget(self, labelText):
-        self.regExtBtn = QPushButton('register .torrent extension')
-        self.regExtBtn.clicked.connect(self.AssociateExtension)
-        self.regProtBtn = QPushButton('Register magnet:// protocol')
-        self.regProtBtn.clicked.connect(self.AssociateProtocol)
         self.label = QLabel(labelText)
-        
-        hLayout =  QHBoxLayout()
-        hLayout.addWidget(self.regExtBtn)
-        hLayout.addWidget(self.regProtBtn)
         mainLayout =  QVBoxLayout()
         mainLayout.addWidget(self.label)
-        mainLayout.addLayout(hLayout)
-        
         w = QWidget()
         w.setLayout(mainLayout)
         self.setCentralWidget(w)
