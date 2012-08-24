@@ -54,7 +54,7 @@ class QSingleApplication(QApplication):
         self.m_server = QLocalServer()
         if self.m_server.listen(self.applicationName()):
             self.m_server.newConnection.connect(self.getNewConnection)
-            self.argsReceived.connect(self.mainWindow.receiveArgs)
+            self.argsReceived.connect(self.mainWindow.receive_args)
             self.mainWindow.show()
         else:
             QMessageBox.critical(None, self.tr("Error"), self.tr("Error listening the socket."))
