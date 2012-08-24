@@ -49,6 +49,16 @@ def associate_extension(progID, exe_path, ext):
         log("setting " + ext + " class to " + progID)
         SetValue(k, None, REG_SZ, progID)
 
+def check_extension(progID, ext):
+    try:
+        with OpenKey(get_classes_key(), ext) as k:
+            value, type = QueryValueEx(k, '')
+            return (value, type) == (progID, REG_SZ)
+    except WindowsError as e:
+        print "error:", e
+        return False
+
+
 def associate_protocol(exe_path, prot):
     # Registering an Application to a URL Protocol
     # http://msdn.microsoft.com/en-us/library/aa767914(v=vs.85).aspx
@@ -63,3 +73,11 @@ def associate_protocol(exe_path, prot):
     with CreateKey(get_protocol_key(prot), "DefaultIcon") as k:
         log("setting DefaultIcon key value to " + icon_path(exe_path))
         SetValue(k, None,  REG_SZ, icon_path(exe_path))
+
+def check_protocol(exe_path, protocol):
+    try:
+        with OpenKey(get_classes_key(), protocol + "\\shell\\open\\command") as k:
+            value, type = QueryValueEx(k, '')
+            return (value, type) == (handler_path(exe_path), REG_SZ)
+    except WindowsError:
+        return false

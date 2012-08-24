@@ -69,6 +69,7 @@ class QSingleApplication(QApplication):
             self.m_socket.bytesWritten.connect(self.quit)
 
     def getNewConnection(self):
+        self.mainWindow.show()
         self.new_socket = self.m_server.nextPendingConnection()
         self.new_socket.readyRead.connect(self.readSocket)
 
